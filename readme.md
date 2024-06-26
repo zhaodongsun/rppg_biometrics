@@ -1,4 +1,4 @@
-# Privacy-preserving Face Biometrics based on Enhanced Remote Photoplethysmography Signal Morphology
+# Biometric Authentication based on Enhanced Remote Photoplethysmography Signal Morphology
 
 Welcome to use the code from our paper.
 
