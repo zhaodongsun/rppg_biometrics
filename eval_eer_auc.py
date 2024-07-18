@@ -4,10 +4,10 @@ from scipy import stats as st
 from sklearn.metrics import roc_curve
 from sklearn import metrics
 
-avg = 20 # ID prediction score averaged on consecutive periodic segments
+avg = 10 # ID prediction score averaged on consecutive periodic segments
 sess = 1 # test on sess 1 (intra-sess testing) or sess 2 (cross-sess testing)
 partition = 'test' # val or test. using val partition to find the best epoch and use test partition on the best epoch
-epoch_list = [2700] # list(range(1000,3000,100))
+epoch_list = [2900] # list(range(0,3000,100)) # used to find the best epoch in val.
 
 
 def compute_eer(gt, pred_prob):
@@ -30,8 +30,7 @@ for e in epoch_list:
     pred_sub_list = []
     label_list = [] 
     for sub in range(100): # get the ID prediction scores and GT labels.
-        # results = np.load(glob.glob('./joint_results/default/1/%d/%03d*%d.npy'%(e, sub+1, sess))[0], allow_pickle=True).item()
-        results = np.load(glob.glob('./joint_results/default/1/%d/%03d*%d.npz'%(e, sub+1, sess))[0])
+        results = np.load(glob.glob('./joint_results/default/1/%d/%03d*%d.np*'%(e, sub+1, sess))[0], allow_pickle=True).item()
         pred_sub = results['pred_list'][0]
 
         idx6, idx8 = int(pred_sub.shape[0]*0.6), int(pred_sub.shape[0]*0.8)

@@ -44,12 +44,9 @@ def my_config():
 
     num_classes_old = 195 # the number of subjects in external cPPG datasets
     num_classes = 100 # the number of subjects in OBF dataset (rPPG dataset)
-    reverse = -1 
+    reverse = 1
     # Since the rPPG model is trained unsupervised in the 1st training stage, rPPG signal could be reversed or not.
-    # Green signals in facial videos are negatively correlated with rPPG signals.
-    # We check the correlations between green signals and rPPG signals.
-    # If rPPG signals positively correlate with green signals, rPPG signals should be reversed (reverse = -1).
-    # If rPPG signals negatively correlate with green signals, rPPG signals should not be reversed (reverse = 1).
+    # try reversed (reverse = -1) or not reversed (reverse = 1).
 
     train_exp_name = 'default'
     result_dir = './joint_results/%s'%(train_exp_name) # store checkpoints and training recording

@@ -1,6 +1,6 @@
 # Biometric Authentication based on Enhanced Remote Photoplethysmography Signal Morphology
 
-Welcome to use the code from our paper.
+Welcome to use the code from our paper "Biometric Authentication based on Enhanced Remote Photoplethysmography Signal Morphology". **The training weights, data, and results can be downloaded [here](https://1drv.ms/u/s!AtCpzthip8c9_X4BfGlm84YGt6g5?e=yZVaTn). Please unzip `rppg_biometrics_artifacts.zip` to the main folder.**
 
 ## Requirement
 
@@ -33,17 +33,20 @@ data_example
 
 if `./data_example/h5_obf` contains the complete OBF data, one can run `python rppg_model_pretraining.py` to start the 1st training stage. More details can be found in the comments of the `.py` file.
 
-Weights and irrelevant power ratios (IPR) are saved during training. The best weight is chosen at the lowest IPR. The chosen weight should be stored at `./rppg_model_pretrained_weights.pt`, which will be used in the 2nd training stage.
+Weights and irrelevant power ratios (IPR) are saved during training at `./results` (The training records are already in the folder.). The best weight is chosen at the lowest IPR by `./notebooks/sacred_train.ipynb`. The chosen weight are stored at `./rppg_model_pretrained_weights.pt`, which will be used in the 2nd training stage.
 
 ### The 2nd training stage: rPPG-cPPG Hybrid Training
 
-if `./data_example/h5_obf` contains the complete OBF data and `./data_example/external_cppg.h5` exists, one can run `python joint_rppg_cppg_hybrid_training.py` to start the 2nd training stage. More details can be found in the comments of the `.py` file. Weights are saved during training. `joint_inference.py` is used to get the ID prediction results and the rPPG signals.
+if `./data_example/h5_obf` contains the complete OBF data and `./data_example/external_cppg.h5` exists, one can run `python joint_rppg_cppg_hybrid_training.py` to start the 2nd training stage. More details can be found in the comments of the `.py` file. Weights are saved during training. `joint_inference.py` is used to get the ID prediction results and the rPPG signals at different epochs as shown below.
 
-## Results
+```
+for epoch in {0..29}
+do
+    python joint_inference.py with train_exp_num=1 e=$(awk "BEGIN {print(${epoch}*100)}") -i $(awk "BEGIN {print(${epoch}*100)}")
+done
+```
 
-The results after the 2nd training stage are in `./joint_results/default/1/2700`, which is chosen from the best epoch in the validation set. The folder contains `.npz` files which contain rPPG periodic segments, cPPG periodic segments, and classification outputs. 
-
-One can run `python eval_eer_auc.py` to replicate the EER and AUC results. One can run `python eval_morph.py` to replicate the Pearson correlation results for the morphology evaluation. More details can be found in the comments of the `.py` files.
+The training records after the 2nd training stage are in `./joint_results/default/1`. One can run `python eval_eer_auc.py` to get the EER and AUC metrics. One can run `python eval_morph.py` to get the Pearson correlation results for the morphology evaluation. More details can be found in the comments of the `.py` files.
 
 ## Citation
 ```
